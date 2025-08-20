@@ -24,12 +24,7 @@ class ObjectInfo {
   PropertyInfo? get idProperty => properties.where((it) => it.isId).firstOrNull;
 }
 
-enum DeserializeMode {
-  none,
-  assign,
-  positionalParam,
-  namedParam,
-}
+enum DeserializeMode { none, assign, positionalParam, namedParam }
 
 class PropertyInfo {
   PropertyInfo({

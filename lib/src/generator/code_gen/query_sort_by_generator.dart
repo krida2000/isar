@@ -13,12 +13,15 @@ String _generateSortBy(ObjectInfo oi) {
       continue;
     }
 
-    final caseSensitiveParam =
-        property.type.isString ? '{bool caseSensitive = true}' : '';
-    final caseSensitiveArg =
-        property.type.isString ? ', caseSensitive: caseSensitive,' : '';
+    final caseSensitiveParam = property.type.isString
+        ? '{bool caseSensitive = true}'
+        : '';
+    final caseSensitiveArg = property.type.isString
+        ? ', caseSensitive: caseSensitive,'
+        : '';
 
-    code += '''
+    code +=
+        '''
     ${prefix}sortBy${property.dartName.capitalize()}($caseSensitiveParam) {
       return QueryBuilder.apply(this, (query) {
         return query.addSortBy(${property.index} $caseSensitiveArg);
@@ -42,12 +45,15 @@ String _generateSortBy(ObjectInfo oi) {
       continue;
     }
 
-    final caseSensitiveParam =
-        property.type.isString ? '{bool caseSensitive = true}' : '';
-    final caseSensitiveArg =
-        property.type.isString ? ', caseSensitive: caseSensitive' : '';
+    final caseSensitiveParam = property.type.isString
+        ? '{bool caseSensitive = true}'
+        : '';
+    final caseSensitiveArg = property.type.isString
+        ? ', caseSensitive: caseSensitive'
+        : '';
 
-    code += '''
+    code +=
+        '''
     ${prefix}thenBy${property.dartName.capitalize()}($caseSensitiveParam) {
       return QueryBuilder.apply(this, (query) {
         return query.addSortBy(${property.index} $caseSensitiveArg);

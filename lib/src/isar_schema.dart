@@ -72,10 +72,7 @@ class IsarSchema {
   /// Get the property schema by its index.
   IsarPropertySchema getPropertyByIndex(int index) {
     if (index == 0) {
-      return IsarPropertySchema(
-        name: idName!,
-        type: IsarType.long,
-      );
+      return IsarPropertySchema(name: idName!, type: IsarType.long);
     } else {
       return properties[index - 1];
     }

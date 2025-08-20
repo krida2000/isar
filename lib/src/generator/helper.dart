@@ -24,7 +24,8 @@ extension on ClassElement {
 
     final usableAccessors = allAccessors.where(
       (e) =>
-          e != null && e.isPublic &&
+          e != null &&
+          e.isPublic &&
           !e.isStatic &&
           !_ignoreChecker.hasAnnotationOf(e.nonSynthetic) &&
           !ignoreFields.contains(e.name) &&

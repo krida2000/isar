@@ -7,12 +7,8 @@ Pointer<CFilter> _buildFilter(Filter filter, List<Pointer<void>> pointers) {
       if (value is double) {
         return IsarCore.b.isar_filter_between(
           filter.property,
-          _isarValue(
-            _adjustLowerFloatBound(value, true, filter.epsilon),
-          ),
-          _isarValue(
-            _adjustUpperFloatBound(value, true, filter.epsilon),
-          ),
+          _isarValue(_adjustLowerFloatBound(value, true, filter.epsilon)),
+          _isarValue(_adjustUpperFloatBound(value, true, filter.epsilon)),
           filter.caseSensitive,
         );
       } else {

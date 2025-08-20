@@ -99,9 +99,6 @@ int platformFastHash(String string) {
 
 /// @nodoc
 @tryInline
-Future<T> runIsolate<T>(
-  String debugName,
-  FutureOr<T> Function() computation,
-) {
+Future<T> runIsolate<T>(String debugName, FutureOr<T> Function() computation) {
   return Isolate.run(computation, debugName: debugName);
 }

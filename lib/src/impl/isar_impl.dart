@@ -11,16 +11,16 @@ class _IsarImpl extends Isar {
         continue;
       }
 
-      collections[schema.converter.type] = schema.converter.withType(
-        <ID, OBJ>(converter) {
-          return _IsarCollectionImpl<ID, OBJ>(
-            this,
-            schema.schema,
-            collections.length,
-            converter,
-          );
-        },
-      );
+      collections[schema.converter.type] = schema.converter.withType(<ID, OBJ>(
+        converter,
+      ) {
+        return _IsarCollectionImpl<ID, OBJ>(
+          this,
+          schema.schema,
+          collections.length,
+          converter,
+        );
+      });
     }
 
     _instances[instanceId] = this;
@@ -51,8 +51,10 @@ class _IsarImpl extends Isar {
 
     if (engine == IsarEngine.isar) {
       if (encryptionKey != null) {
-        throw ArgumentError('Isar engine does not support encryption. Please '
-            'set the engine to IsarEngine.sqlite.');
+        throw ArgumentError(
+          'Isar engine does not support encryption. Please '
+          'set the engine to IsarEngine.sqlite.',
+        );
       }
       maxSizeMiB ??= Isar.defaultMaxSizeMiB;
     } else {
@@ -66,8 +68,9 @@ class _IsarImpl extends Isar {
       ...schemas,
       ...schemas.expand((e) => e.embeddedSchemas ?? <IsarGeneratedSchema>[]),
     };
-    final schemaJson =
-        jsonEncode(allSchemas.map((e) => e.schema.toJson()).toList());
+    final schemaJson = jsonEncode(
+      allSchemas.map((e) => e.schema.toJson()).toList(),
+    );
 
     final instanceId = Isar.fastHash(name);
     final instance = _IsarImpl._instances[instanceId];
@@ -114,8 +117,10 @@ class _IsarImpl extends Isar {
       ptr = IsarCore.b.isar_get_instance(instanceId, true);
     }
     if (ptr.isNull) {
-      throw IsarNotReadyError('Instance has not been opened yet. Make sure to '
-          'call Isar.open() before using Isar.get().');
+      throw IsarNotReadyError(
+        'Instance has not been opened yet. Make sure to '
+        'call Isar.open() before using Isar.get().',
+      );
     }
 
     return _IsarImpl._(instanceId, ptr, schemas);
@@ -132,10 +137,7 @@ class _IsarImpl extends Isar {
       return instance;
     }
 
-    return _IsarImpl.get(
-      instanceId: instanceId,
-      schemas: schemas,
-    );
+    return _IsarImpl.get(instanceId: instanceId, schemas: schemas);
   }
 
   static Future<Isar> openAsync({
@@ -151,30 +153,27 @@ class _IsarImpl extends Isar {
 
     final receivePort = ReceivePort();
     final sendPort = receivePort.sendPort;
-    final isolate = runIsolate(
-      'Isar open async',
-      () async {
-        try {
-          final isar = _IsarImpl.open(
-            schemas: schemas,
-            directory: directory,
-            name: name,
-            engine: engine,
-            maxSizeMiB: maxSizeMiB,
-            encryptionKey: encryptionKey,
-            compactOnLaunch: compactOnLaunch,
-            library: library,
-          );
+    final isolate = runIsolate('Isar open async', () async {
+      try {
+        final isar = _IsarImpl.open(
+          schemas: schemas,
+          directory: directory,
+          name: name,
+          engine: engine,
+          maxSizeMiB: maxSizeMiB,
+          encryptionKey: encryptionKey,
+          compactOnLaunch: compactOnLaunch,
+          library: library,
+        );
 
-          final receivePort = ReceivePort();
-          sendPort.send(receivePort.sendPort);
-          await receivePort.first;
-          isar.close();
-        } catch (e) {
-          sendPort.send(e);
-        }
-      },
-    );
+        final receivePort = ReceivePort();
+        sendPort.send(receivePort.sendPort);
+        await receivePort.first;
+        isar.close();
+      } catch (e) {
+        sendPort.send(e);
+      }
+    });
 
     final response = await receivePort.first;
     if (response is SendPort) {
@@ -223,8 +222,9 @@ class _IsarImpl extends Isar {
   }();
 
   @override
-  late final List<IsarSchema> schemas =
-      generatedSchemas.map((e) => e.schema).toList();
+  late final List<IsarSchema> schemas = generatedSchemas
+      .map((e) => e.schema)
+      .toList();
 
   @override
   bool get isOpen => _ptr != null;
@@ -251,10 +251,8 @@ class _IsarImpl extends Isar {
 
   @tryInline
   T getTxn<T>(
-    T Function(
-      Pointer<CIsarInstance> isarPtr,
-      Pointer<CIsarTxn> txnPtr,
-    ) callback,
+    T Function(Pointer<CIsarInstance> isarPtr, Pointer<CIsarTxn> txnPtr)
+    callback,
   ) {
     final txnPtr = _txnPtr;
     if (txnPtr != null) {
@@ -269,7 +267,8 @@ class _IsarImpl extends Isar {
     (T, Pointer<CIsarTxn>?) Function(
       Pointer<CIsarInstance> isarPtr,
       Pointer<CIsarTxn> txnPtr,
-    ) callback, {
+    )
+    callback, {
     bool consume = false,
   }) {
     final txnPtr = _txnPtr;
@@ -376,19 +375,16 @@ class _IsarImpl extends Isar {
     final instance = instanceId;
     final library = IsarCore._library;
     final schemas = generatedSchemas.toList();
-    return runIsolate(
-      debugName ?? 'Isar async write',
-      () {
-        return _isarAsync(
-          instanceId: instance,
-          schemas: schemas,
-          write: true,
-          param: param,
-          callback: callback,
-          library: library,
-        );
-      },
-    );
+    return runIsolate(debugName ?? 'Isar async write', () {
+      return _isarAsync(
+        instanceId: instance,
+        schemas: schemas,
+        write: true,
+        param: param,
+        callback: callback,
+        library: library,
+      );
+    });
   }
 
   @override

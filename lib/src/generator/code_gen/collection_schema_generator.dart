@@ -21,8 +21,9 @@ String _generateSchema(ObjectInfo object) {
     ),''';
   }
 
-  final embeddedSchemas =
-      object.embeddedDartNames.map((e) => '${e.capitalize()}Schema').join(',');
+  final embeddedSchemas = object.embeddedDartNames
+      .map((e) => '${e.capitalize()}Schema')
+      .join(',');
   final properties = object.properties
       .where((e) => !e.isId || e.type != IsarType.long)
       .map(generatePropertySchema)

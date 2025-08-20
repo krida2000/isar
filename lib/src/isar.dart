@@ -8,7 +8,7 @@ enum IsarEngine {
   isar,
 
   /// The SQLite storage engine.
-  sqlite
+  sqlite,
 }
 
 /// An Isar database instance.
@@ -239,8 +239,7 @@ abstract class Isar {
   Future<T> writeAsync<T>(
     T Function(Isar isar) callback, {
     String? debugName,
-  }) =>
-      writeAsyncWith(null, (isar, _) => callback(isar), debugName: debugName);
+  }) => writeAsyncWith(null, (isar, _) => callback(isar), debugName: debugName);
 
   /// Create an asynchronous read-write transaction and pass a parameter to the
   /// callback.

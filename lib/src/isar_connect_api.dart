@@ -71,9 +71,7 @@ class ConnectSchemasPayload {
   final List<IsarSchema> schemas;
 
   Map<String, dynamic> toJson() {
-    return {
-      'schemas': schemas.map((e) => e.toJson()).toList(),
-    };
+    return {'schemas': schemas.map((e) => e.toJson()).toList()};
   }
 }
 
@@ -186,10 +184,10 @@ class ConnectQueryPayload {
       case LessOrEqualCondition(:final property, :final value):
         return {'type': 'lte', 'property': property, 'value': value};
       case BetweenCondition(
-          property: final property,
-          lower: final lower,
-          upper: final upper,
-        ):
+        property: final property,
+        lower: final lower,
+        upper: final upper,
+      ):
         return {
           'type': 'between',
           'property': property,

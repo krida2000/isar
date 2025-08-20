@@ -185,8 +185,9 @@ class _IsarAnalyzer {
     late final IsarType type;
     if (dartType.scalarType.element is EnumElement) {
       final enumClass = dartType.scalarType.element! as EnumElement;
-      final enumElements =
-          enumClass.fields.where((f) => f.isEnumConstant).toList();
+      final enumElements = enumClass.fields
+          .where((f) => f.isEnumConstant)
+          .toList();
 
       final enumProperty = enumClass.enumValueProperty;
       enumPropertyName = enumProperty?.name ?? 'index';
@@ -195,8 +196,9 @@ class _IsarAnalyzer {
         _err('Only fields are supported for enum properties', enumProperty);
       }
 
-      final enumIsarType =
-          enumProperty == null ? IsarType.byte : enumProperty.type.propertyType;
+      final enumIsarType = enumProperty == null
+          ? IsarType.byte
+          : enumProperty.type.propertyType;
       if (enumIsarType != IsarType.byte &&
           enumIsarType != IsarType.int &&
           enumIsarType != IsarType.long &&
@@ -210,9 +212,11 @@ class _IsarAnalyzer {
         final element = enumElements[i];
         dynamic propertyValue = i;
         if (enumProperty != null) {
-          final property =
-              element.computeConstantValue()!.getField(enumProperty.name)!;
-          propertyValue = property.toBoolValue() ??
+          final property = element.computeConstantValue()!.getField(
+            enumProperty.name,
+          )!;
+          propertyValue =
+              property.toBoolValue() ??
               property.toIntValue() ??
               property.toDoubleValue() ??
               property.toStringValue();
@@ -226,10 +230,7 @@ class _IsarAnalyzer {
         }
 
         if (enumMap.values.contains(propertyValue)) {
-          _err(
-            'Enum property has duplicate values.',
-            enumProperty,
-          );
+          _err('Enum property has duplicate values.', enumProperty);
         }
         enumMap[element.name] = propertyValue;
       }
@@ -248,11 +249,12 @@ class _IsarAnalyzer {
       }
     }
 
-    final nullable = dartType.nullabilitySuffix != NullabilitySuffix.none ||
+    final nullable =
+        dartType.nullabilitySuffix != NullabilitySuffix.none ||
         dartType is DynamicType;
     final elementNullable = type.isList
         ? dartType.scalarType.nullabilitySuffix != NullabilitySuffix.none ||
-            dartType.scalarType is DynamicType
+              dartType.scalarType is DynamicType
         : null;
     if (isId) {
       if (type != IsarType.long && type != IsarType.string) {
@@ -282,8 +284,9 @@ class _IsarAnalyzer {
       mode = constructorParameter.isNamed
           ? DeserializeMode.namedParam
           : DeserializeMode.positionalParam;
-      constructorPosition =
-          constructor.parameters.indexOf(constructorParameter);
+      constructorPosition = constructor.parameters.indexOf(
+        constructorParameter,
+      );
     } else {
       mode = property.setter == null
           ? DeserializeMode.none
@@ -297,8 +300,9 @@ class _IsarAnalyzer {
       typeClassName: type == IsarType.json
           ? dartType.element!.name!
           : dartType.scalarType.element!.name!,
-      targetIsarName:
-          type.isObject ? dartType.scalarType.element!.isarName : null,
+      targetIsarName: type.isObject
+          ? dartType.scalarType.element!.isarName
+          : null,
       type: type,
       isId: isId,
       enumMap: enumMap,
@@ -307,8 +311,9 @@ class _IsarAnalyzer {
       elementNullable: elementNullable,
       defaultValue:
           constructorParameter?.defaultValueCode ?? _defaultValue(dartType),
-      elementDefaultValue:
-          type.isList ? _defaultValue(dartType.scalarType) : null,
+      elementDefaultValue: type.isList
+          ? _defaultValue(dartType.scalarType)
+          : null,
       utc: type.isDate && property.hasUtcAnnotation,
       mode: mode,
       assignable: property.setter != null,
@@ -379,8 +384,9 @@ class _IsarAnalyzer {
 
       for (var i = 0; i < indexProperties.length; i++) {
         final propertyName = indexProperties[i];
-        final property =
-            properties.where((it) => it.isarName == propertyName).firstOrNull;
+        final property = properties
+            .where((it) => it.isarName == propertyName)
+            .firstOrNull;
         if (property == null) {
           _err('Property does not exist: "$propertyName".', element);
         } else if (property.isId) {
