@@ -14,17 +14,17 @@ extension on ClassElement {
     final ignoreFields =
         collectionAnnotation?.ignore ?? embeddedAnnotation!.ignore;
     final allAccessors = [
-      ...accessors.map((e) => e.variable),
+      ...accessors.map((e) => e.variable2),
       if (collectionAnnotation?.inheritance ?? embeddedAnnotation!.inheritance)
         for (final supertype in allSupertypes) ...[
           if (!supertype.isDartCoreObject)
-            ...supertype.accessors.map((e) => e.variable),
+            ...supertype.accessors.map((e) => e.variable2),
         ],
     ];
 
     final usableAccessors = allAccessors.where(
       (e) =>
-          e.isPublic &&
+          e != null && e.isPublic &&
           !e.isStatic &&
           !_ignoreChecker.hasAnnotationOf(e.nonSynthetic) &&
           !ignoreFields.contains(e.name) &&
@@ -33,7 +33,7 @@ extension on ClassElement {
 
     final uniqueAccessors = <String, PropertyInducingElement>{};
     for (final accessor in usableAccessors) {
-      uniqueAccessors[accessor.name] = accessor;
+      uniqueAccessors[accessor!.name] = accessor;
     }
     return uniqueAccessors.values.toList();
   }
