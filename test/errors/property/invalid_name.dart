@@ -6,6 +6,6 @@ import 'package:isar/isar.dart';
 class Model {
   late int id;
 
-  @Name('_prop')
+  @IsarName('_prop')
   String? prop;
 }

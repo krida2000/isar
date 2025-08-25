@@ -8,6 +8,6 @@ class Model {
 
   String? prop1;
 
-  @Name('prop1')
+  @IsarName('prop1')
   String? prop2;
 }
