@@ -1,24 +1,24 @@
 part of isar_generator;
 
-const TypeChecker _dateTimeChecker = TypeChecker.fromRuntime(DateTime);
+const TypeChecker _dateTimeChecker = TypeChecker.typeNamed(DateTime);
 
 extension on DartType {
   bool get isDartCoreDateTime =>
-      element != null && _dateTimeChecker.isExactly(element!);
+      element3 != null && _dateTimeChecker.isExactly(element3!);
 
   IsarType? get _primitiveIsarType {
     if (isDartCoreBool) {
       return IsarType.bool;
     } else if (isDartCoreInt) {
-      if (alias?.element.name == 'byte') {
+      if (alias?.element2.name3 == 'byte') {
         return IsarType.byte;
-      } else if (alias?.element.name == 'short') {
+      } else if (alias?.element2.name3 == 'short') {
         return IsarType.int;
       } else {
         return IsarType.long;
       }
     } else if (isDartCoreDouble) {
-      if (alias?.element.name == 'float') {
+      if (alias?.element2.name3 == 'float') {
         return IsarType.float;
       } else {
         return IsarType.double;
@@ -27,7 +27,7 @@ extension on DartType {
       return IsarType.string;
     } else if (isDartCoreDateTime) {
       return IsarType.dateTime;
-    } else if (element!.embeddedAnnotation != null) {
+    } else if (element3!.embeddedAnnotation != null) {
       return IsarType.object;
     } else if (this is DynamicType) {
       return IsarType.json;
@@ -91,15 +91,16 @@ extension on DartType {
   }
 
   bool get supportsJsonConversion {
-    final element = this.element;
-    if (element is ClassElement) {
+    final element = element3;
+    if (element is ClassElement2) {
       // check if the class has a toJson() method returning Map<String,dynamic>
       // and a fromJson factory
-      final toJson = element.getMethod('toJson');
-      final fromJson = element.getNamedConstructor('fromJson');
+      final toJson = element.getMethod2('toJson');
+      final fromJson = element.getNamedConstructor2('fromJson');
       if (toJson != null && fromJson != null) {
         final toJsonReturnType = toJson.returnType;
-        final fromJsonParameterType = fromJson.parameters.firstOrNull?.type;
+        final fromJsonParameterType =
+            fromJson.formalParameters.firstOrNull?.type;
         if (toJsonReturnType.isDartCoreMap &&
             toJsonReturnType is ParameterizedType &&
             toJsonReturnType.typeArguments[0].isDartCoreString &&
