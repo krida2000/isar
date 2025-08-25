@@ -109,9 +109,8 @@ class _IsarAnalyzer {
       _err('Class must be public.', modelClass);
     }
 
-    // If name == `null` this is unnamed constructor?
     final constructor = modelClass.constructors2
-        .where((c) => c.name3 == null)
+        .where((c) => c.name3 == 'new')
         .firstOrNull;
     if (constructor == null) {
       _err('Class needs an unnamed constructor.', modelClass);

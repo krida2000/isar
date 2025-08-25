@@ -17,10 +17,9 @@ void main() {
 
         var error = '';
         try {
-          await testBuilder(
-            getIsarGenerator(BuilderOptions.empty),
-            {'a|${file.path}': content.join('\n')},
-          );
+          await testBuilder(getIsarGenerator(BuilderOptions.empty), {
+            'a|${file.path}': content.join('\n'),
+          });
         } catch (e) {
           error = e.toString();
         }
